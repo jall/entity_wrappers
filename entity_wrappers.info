@@ -1,0 +1,8 @@
+name = Entity Wrappers
+description = Provides better entity wrappers for standard Drupal entities.
+core = 7.x
+version = 7.x-1.0
+php = 5.5
+
+dependencies[] = entity
+dependencies[] = xautoload
