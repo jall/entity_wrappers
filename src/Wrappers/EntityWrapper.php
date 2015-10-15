@@ -51,6 +51,19 @@ abstract class EntityWrapper extends EntityDrupalWrapper {
   }
 
   /**
+   * Takes an array of entity wrappers and returns an array of entity ids.
+   *
+   * @param self[] $wrappers
+   *
+   * @return int[]
+   */
+  public static function extractIds(array $wrappers) {
+    return array_map(function (EntityWrapper $wrapper) {
+      return $wrapper->getIdentifier();
+    }, $wrappers);
+  }
+
+  /**
    * Takes an array of entity ids and returns an array of entity wrappers.
    *
    * @param int[] $ids
