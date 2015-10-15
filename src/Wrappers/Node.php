@@ -115,8 +115,4 @@ class Node extends EntityWrapper {
     return static::getWrappers($cache[static::ENTITY_TYPE][$title]);
   }
 
-  public static function resetTitleCache() {
-    drupal_static_reset(self::CACHE_KEY_TITLE);
-  }
-
 }
