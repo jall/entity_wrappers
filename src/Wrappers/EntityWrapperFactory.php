@@ -16,19 +16,17 @@ class EntityWrapperFactory {
   /**
    * Returns an entity wrapper class for the entity type provided.
    *
-   * @param string $entity_type
-   *   The entity type to load the class for.
    * @param mixed $data
    *   The data to pass to the wrapper class constructor. Usually the id or
    *   loaded entity.
+   * @param string $entity_type
+   *   The entity type to load the class for.
    * @param string $bundle
    *   (optional) The bundle of the entity type to retrieve the class for.
    *
    * @return Node|TaxonomyTerm|User
-   *
-   * @throws InvalidArgumentException
    */
-  public static function getWrapper($entity_type, $data, $bundle = self::NO_BUNDLE) {
+  public static function getWrapper($data, $entity_type, $bundle = self::NO_BUNDLE) {
     switch ($entity_type) {
 
       case Node::ENTITY_TYPE:
