@@ -2,32 +2,22 @@
 
 /**
  * @file
- * Wrapper entity for taxonomy terms.
+ * Wrapper entity for taxonomy terms bundles.
  */
 
-namespace Drupal\entity_wrappers\Wrappers;
+namespace Drupal\siaf\Wrappers\TaxonomyTerm;
 
-use Drupal\entity_wrappers\Exceptions\NonUniqueResultException;
-use Drupal\entity_wrappers\Shared\ArrayUniqueness;
+use Drupal\entity_wrappers\Wrappers\TaxonomyTerm;
+use Drupal\entity_wrappers\Wrappers\TaxonomyVocabulary;
 use EntityFieldQuery;
-use InvalidArgumentException;
 
-class TaxonomyTerm extends EntityWrapper {
-
-  use ArrayUniqueness;
-
-  const ENTITY_TYPE = 'taxonomy_term';
+abstract class TaxonomyTermBundle extends TaxonomyTerm {
 
   /**
-   * @param string $name
-   *
-   * @return static
-   *
-   * @throws InvalidArgumentException
-   * @throws NonUniqueResultException
+   * @return TaxonomyVocabulary
    */
-  public static function loadByName($name) {
-    return static::extractSingleItem($name, static::loadMultipleByName($name));
+  public static function getVocabulary() {
+    return TaxonomyVocabulary::loadByMachineName(static::BUNDLE);
   }
 
   /**
@@ -43,6 +33,7 @@ class TaxonomyTerm extends EntityWrapper {
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
         ->propertyCondition('name', $name)
+        ->propertyCondition('vid', static::getVocabulary()->getIdentifier())
         ->execute();
 
       $cache[$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];

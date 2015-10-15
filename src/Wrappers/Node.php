@@ -8,12 +8,17 @@
 namespace Drupal\entity_wrappers\Wrappers;
 
 use Drupal\entity_wrappers\Exceptions\NonUniqueResultException;
+use Drupal\entity_wrappers\Shared\ArrayUniqueness;
 use EntityFieldQuery;
 use InvalidArgumentException;
 
 class Node extends EntityWrapper {
 
+  use ArrayUniqueness;
+
   const ENTITY_TYPE = 'node';
+
+  const CACHE_KEY_TITLE = 'Node::loadMultipleByTitle';
 
   /**
    * @return User
@@ -86,17 +91,7 @@ class Node extends EntityWrapper {
    * @throws NonUniqueResultException
    */
   public static function loadByTitle($title) {
-    $nodes = static::loadMultipleByTitle($title);
-
-    if (empty($nodes)) {
-      throw new InvalidArgumentException(t('Unable to load "@title" node.', ['@title' => $title]));
-    }
-
-    if (count($nodes) > 1) {
-      throw new NonUniqueResultException(t('Multiple results found for "@title" node.', ['@title' => $title]));
-    }
-
-    return array_pop($nodes);
+    return static::extractSingleItem($title, static::loadMultipleByTitle($title));
   }
 
   /**
@@ -105,29 +100,23 @@ class Node extends EntityWrapper {
    * @return static[]
    */
   public static function loadMultipleByTitle($title) {
-    $cache = &drupal_static(__METHOD__ . '::' . static::BUNDLE, []);
+    $cache = &drupal_static(self::CACHE_KEY_TITLE, []);
 
-    if (!isset($cache[$title])) {
+    if (!isset($cache[static::ENTITY_TYPE][$title])) {
       $query = new EntityFieldQuery();
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
-        ->entityCondition('bundle', static::BUNDLE)
         ->propertyCondition('title', $title)
         ->execute();
 
-      $cache[$title] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
+      $cache[static::ENTITY_TYPE][$title] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
     }
 
-    return static::getWrappers($cache[$title]);
+    return static::getWrappers($cache[static::ENTITY_TYPE][$title]);
   }
 
-  /**
-   * @param string $bundle
-   *   The node bundle to reset the cache for.
-   */
-  public static function resetTitleCache($bundle) {
-    $key = __CLASS__ . '::loadMultipleByTitle::' . $bundle;
-    drupal_static_reset($key);
+  public static function resetTitleCache() {
+    drupal_static_reset(self::CACHE_KEY_TITLE);
   }
 
 }

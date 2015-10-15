@@ -4,13 +4,3 @@
  * @file
  * Main hook implementations.
  */
-
-use Drupal\entity_wrappers\Wrappers\Node;
-
-/**
- * Implements hook_node_presave().
- */
-function entity_wrappers_node_presave($node) {
-  list(, , $bundle) = entity_extract_ids(Node::ENTITY_TYPE, $node);
-  Node::resetTitleCache($bundle);
-}
