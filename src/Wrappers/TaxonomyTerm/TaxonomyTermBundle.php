@@ -5,7 +5,7 @@
  * Wrapper entity for taxonomy terms bundles.
  */
 
-namespace Drupal\siaf\Wrappers\TaxonomyTerm;
+namespace Drupal\entity_wrappers\Wrappers\TaxonomyTerm;
 
 use Drupal\entity_wrappers\Wrappers\TaxonomyTerm;
 use Drupal\entity_wrappers\Wrappers\TaxonomyVocabulary;

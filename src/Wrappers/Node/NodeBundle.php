@@ -5,7 +5,7 @@
  * Wrapper entity for node bundles.
  */
 
-namespace Drupal\siaf\Wrappers\Node;
+namespace Drupal\entity_wrappers\Wrappers\Node;
 
 use Drupal\entity_wrappers\Wrappers\Node;
 use EntityFieldQuery;
