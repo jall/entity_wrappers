@@ -26,20 +26,20 @@ abstract class TaxonomyTermBundle extends TaxonomyTerm {
    * @return static[]
    */
   public static function loadMultipleByName($name) {
-    $cache = &drupal_static(__METHOD__, []);
+    $cache = &drupal_static(static::CACHE_KEY_NAME, []);
 
-    if (!isset($cache[$name])) {
+    if (!isset($cache[static::BUNDLE][$name])) {
       $query = new EntityFieldQuery();
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
-        ->propertyCondition('name', $name)
         ->propertyCondition('vid', static::getVocabulary()->getIdentifier())
+        ->propertyCondition('name', $name)
         ->execute();
 
-      $cache[$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
+      $cache[static::BUNDLE][$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
     }
 
-    return static::getWrappers($cache[$name]);
+    return static::getWrappers($cache[static::BUNDLE][$name]);
   }
 
 }

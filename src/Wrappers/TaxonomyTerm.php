@@ -18,6 +18,8 @@ class TaxonomyTerm extends EntityWrapper {
 
   const ENTITY_TYPE = 'taxonomy_term';
 
+  const CACHE_KEY_NAME = 'TaxonomyTerm::loadMultipleByName';
+
   /**
    * @param string $name
    *
@@ -36,19 +38,19 @@ class TaxonomyTerm extends EntityWrapper {
    * @return static[]
    */
   public static function loadMultipleByName($name) {
-    $cache = &drupal_static(__METHOD__, []);
+    $cache = &drupal_static(static::CACHE_KEY_NAME, []);
 
-    if (!isset($cache[$name])) {
+    if (!isset($cache[static::ENTITY_TYPE][$name])) {
       $query = new EntityFieldQuery();
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
         ->propertyCondition('name', $name)
         ->execute();
 
-      $cache[$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
+      $cache[static::ENTITY_TYPE][$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
     }
 
-    return static::getWrappers($cache[$name]);
+    return static::getWrappers($cache[static::ENTITY_TYPE][$name]);
   }
 
 }
