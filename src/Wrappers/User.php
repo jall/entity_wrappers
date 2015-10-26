@@ -7,6 +7,8 @@
 
 namespace Drupal\entity_wrappers\Wrappers;
 
+use InvalidArgumentException;
+
 class User extends EntityWrapper {
 
   const ENTITY_TYPE = 'user';
@@ -62,9 +64,17 @@ class User extends EntityWrapper {
    * @param string $email
    *
    * @return static
+   *
+   * @throws InvalidArgumentException
    */
   public static function loadByEmail($email) {
-    return new static(user_load_by_mail($email));
+    $account = user_load_by_mail($email);
+
+    if ($account) {
+      return new static($account);
+    }
+
+    throw new InvalidArgumentException(t('Unable to load user with email %email', ['%email' => $email]));
   }
 
 }
