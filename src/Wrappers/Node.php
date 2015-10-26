@@ -18,34 +18,41 @@ class Node extends EntityWrapper {
 
   const ENTITY_TYPE = 'node';
 
+  const PROPERTY_AUTHOR = 'author';
+  const PROPERTY_CHANGED = 'changed';
+  const PROPERTY_CREATED = 'created';
+  const PROPERTY_ID = 'nid';
+  const PROPERTY_STATUS = 'status';
+  const PROPERTY_TITLE = 'title';
+
   const CACHE_KEY_TITLE = 'Node::loadMultipleByTitle';
 
   /**
    * @return User
    */
   public function getAuthor() {
-    return new User($this->{'author'}->raw());
+    return new User($this->{static::PROPERTY_AUTHOR}->raw());
   }
 
   /**
    * @param User $account
    */
   public function setAuthor(User $account) {
-    $this->{'author'}->set($account->getIdentifier());
+    $this->{static::PROPERTY_AUTHOR}->set($account->getIdentifier());
   }
 
   /**
    * @return string
    */
   public function getTitle() {
-    return $this->{'title'}->value();
+    return $this->{static::PROPERTY_TITLE}->value();
   }
 
   /**
    * @param string $title
    */
   public function setTitle($title) {
-    $this->{'title'}->set($title);
+    $this->{static::PROPERTY_TITLE}->set($title);
   }
 
   /**
@@ -53,7 +60,7 @@ class Node extends EntityWrapper {
    *   Unix timestamp.
    */
   public function getCreatedTime() {
-    return $this->{'created'}->value();
+    return $this->{static::PROPERTY_CREATED}->value();
   }
 
   /**
@@ -61,7 +68,7 @@ class Node extends EntityWrapper {
    *   Unix timestamp.
    */
   public function setCreatedTime($timestamp) {
-    $this->{'created'}->set($timestamp);
+    $this->{static::PROPERTY_CREATED}->set($timestamp);
   }
 
   /**
@@ -106,7 +113,7 @@ class Node extends EntityWrapper {
       $query = new EntityFieldQuery();
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
-        ->propertyCondition('title', $title)
+        ->propertyCondition(static::PROPERTY_TITLE, $title)
         ->execute();
 
       $cache[static::ENTITY_TYPE][$title] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];

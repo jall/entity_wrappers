@@ -12,39 +12,43 @@ class User extends EntityWrapper {
   const ENTITY_TYPE = 'user';
   const BUNDLE = 'user';
 
+  const PROPERTY_EMAIL = 'mail';
+  const PROPERTY_ROLES = 'roles';
+  const PROPERTY_USERNAME = 'name';
+
   /**
    * @return string
    */
   public function getEmail() {
-    return $this->{'mail'}->value();
+    return $this->{static::PROPERTY_EMAIL}->value();
   }
 
   /**
    * @param string $email
    */
   public function setEmail($email) {
-    return $this->{'mail'}->set($email);
+    return $this->{static::PROPERTY_EMAIL}->set($email);
   }
 
   /**
    * @return string
    */
   public function getUsername() {
-    return $this->{'name'}->value();
+    return $this->{static::PROPERTY_USERNAME}->value();
   }
 
   /**
    * @return string[]
    */
   public function getRoles() {
-    return $this->{'roles'}->value();
+    return $this->{static::PROPERTY_ROLES}->value();
   }
 
   /**
    * @param int $role_id
    */
   public function addRole($role_id) {
-    $this->{'roles'}[] = $role_id;
+    $this->{static::PROPERTY_ROLES}[] = $role_id;
   }
 
   /**

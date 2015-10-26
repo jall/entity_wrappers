@@ -18,6 +18,11 @@ class TaxonomyTerm extends EntityWrapper {
 
   const ENTITY_TYPE = 'taxonomy_term';
 
+  const PROPERTY_ID = 'tid';
+  const PROPERTY_NAME = 'name';
+  const PROPERTY_VOCABULARY_ID = 'vid';
+  const PROPERTY_VOCABULARY_NAME = 'vocabulary_machine_name';
+
   const CACHE_KEY_NAME = 'TaxonomyTerm::loadMultipleByName';
 
   /**
@@ -44,7 +49,7 @@ class TaxonomyTerm extends EntityWrapper {
       $query = new EntityFieldQuery();
       $result = $query
         ->entityCondition('entity_type', static::ENTITY_TYPE)
-        ->propertyCondition('name', $name)
+        ->propertyCondition(static::PROPERTY_NAME, $name)
         ->execute();
 
       $cache[static::ENTITY_TYPE][$name] = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
