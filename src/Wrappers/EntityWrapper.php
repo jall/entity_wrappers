@@ -66,8 +66,8 @@ abstract class EntityWrapper extends EntityDrupalWrapper {
   /**
    * Takes an array of entity ids and returns an array of entity wrappers.
    *
-   * @param int[] $ids
-   *   A list of entity ids.
+   * @param int[]|object[] $ids
+   *   A list of entity ids or loaded entities to wrap.
    *
    * @return static[]
    *   A list of wrapped entities.
@@ -81,8 +81,8 @@ abstract class EntityWrapper extends EntityDrupalWrapper {
   /**
    * Takes an array of entity ids and returns a generator of entity wrappers.
    *
-   * @param int[] $ids
-   *   A list of entity ids.
+   * @param int[]|object[] $ids
+   *   A list of entity ids or loaded entities to wrap.
    *
    * @return Generator
    *   A generator containing the wrapped entities.
