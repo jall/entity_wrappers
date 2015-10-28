@@ -122,7 +122,7 @@ abstract class EntityWrapper extends EntityDrupalWrapper {
    * @return static
    *   The entity's wrapper.
    */
-  public static function create($values) {
+  public static function create(array $values = []) {
     $values += ['type' => static::BUNDLE];
     $entity = entity_create(static::ENTITY_TYPE, $values);
     return new static($entity);
