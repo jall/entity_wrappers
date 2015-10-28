@@ -94,24 +94,6 @@ abstract class EntityWrapper extends EntityDrupalWrapper {
   }
 
   /**
-   * Returns ALL entities of a certain type.
-   *
-   * This returns a generator, as we don't really want to be storing potentially
-   * thousands of objects in memory at once.
-   *
-   * @return Generator
-   */
-  public static function loadAll() {
-    $query = new EntityFieldQuery();
-    $result = $query
-      ->entityCondition('entity_type', static::ENTITY_TYPE)
-      ->execute();
-
-    $ids = !empty($result[static::ENTITY_TYPE]) ? array_keys($result[static::ENTITY_TYPE]) : [];
-    return static::yieldWrappers($ids);
-  }
-
-  /**
    * Creates a new entity and returns its wrapper.
    *
    * Note that different entities need different properties.
