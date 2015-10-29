@@ -24,23 +24,27 @@ class EntityWrapperFactory {
    * @param string $bundle
    *   (optional) The bundle of the entity type to retrieve the class for.
    *
-   * @return Node|TaxonomyTerm|User
+   * @return EntityWrapper
    */
   public static function getWrapper($data, $entity_type, $bundle = self::NO_BUNDLE) {
-    switch ($entity_type) {
+    $info = entity_get_info($entity_type);
 
-      case Node::ENTITY_TYPE:
-        return new Node($data);
-
-      case TaxonomyTerm::ENTITY_TYPE:
-        return new TaxonomyTerm($data);
-
-      case User::ENTITY_TYPE:
-        return new User($data);
-
-      default:
-        throw new InvalidArgumentException(self::invalidEntityTypeMessage($entity_type));
+    if ($bundle !== static::NO_BUNDLE) {
+      if (isset($info['bundles'][$bundle]['entity_wrappers']['class'])) {
+        $class = $info['bundles'][$bundle]['entity_wrappers']['class'];
+      }
+      else {
+        throw new InvalidArgumentException(static::invalidBundleMessage($bundle));
+      }
     }
+    elseif (isset($info['entity_wrappers']['class'])) {
+      $class = $info['entity_wrappers']['class'];
+    }
+    else {
+      throw new InvalidArgumentException(static::invalidEntityTypeMessage($entity_type));
+    }
+
+    return new $class($data);
   }
 
   /**

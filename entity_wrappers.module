@@ -4,3 +4,35 @@
  * @file
  * Main hook implementations.
  */
+
+use Drupal\entity_wrappers\Wrappers\EntityWrapper;
+use Drupal\entity_wrappers\Wrappers\EntityWrapperFactory;
+use Drupal\entity_wrappers\Wrappers\Node;
+use Drupal\entity_wrappers\Wrappers\TaxonomyTerm;
+use Drupal\entity_wrappers\Wrappers\User;
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function entity_wrappers_entity_info_alter(&$entity_info) {
+  $entity_info[Node::ENTITY_TYPE]['entity_wrappers'] = ['class' => Node::class];
+  $entity_info[TaxonomyTerm::ENTITY_TYPE]['entity_wrappers'] = ['class' => TaxonomyTerm::class];
+  $entity_info[User::ENTITY_TYPE]['entity_wrappers'] = ['class' => User::class];
+}
+
+/**
+ * Menu auto-loader for entity wrappers.
+ *
+ * @param mixed $data
+ *   The data to pass to the wrapper class constructor. Usually the id or
+ *   loaded entity.
+ * @param string $entity_type
+ *   The entity type to load the class for.
+ * @param string $bundle
+ *   (optional) The bundle of the entity type to retrieve the class for.
+ *
+ * @return EntityWrapper
+ */
+function entity_wrapper_load($data, $entity_type, $bundle = EntityWrapperFactory::NO_BUNDLE) {
+  return EntityWrapperFactory::getWrapper($data, $entity_type, $bundle);
+}
