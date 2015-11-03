@@ -5,7 +5,7 @@
  * Entity wrapper methods to load all entities of that type.
  */
 
-namespace Drupal\b2b\Shared;
+namespace Drupal\entity_wrappers\Shared;
 
 use EntityFieldQuery;
 use Generator;
