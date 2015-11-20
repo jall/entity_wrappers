@@ -17,6 +17,10 @@ class User extends EntityWrapper {
   const PROPERTY_EMAIL = 'mail';
   const PROPERTY_ROLES = 'roles';
   const PROPERTY_USERNAME = 'name';
+  const PROPERTY_STATUS = 'status';
+
+  const STATUS_ACTIVE = 1;
+  const STATUS_BLOCKED = 0;
 
   /**
    * @return string
@@ -27,9 +31,12 @@ class User extends EntityWrapper {
 
   /**
    * @param string $email
+   *
+   * @return $this
    */
   public function setEmail($email) {
-    return $this->{static::PROPERTY_EMAIL}->set($email);
+   $this->{static::PROPERTY_EMAIL}->set($email);
+   return $this;
   }
 
   /**
@@ -37,6 +44,16 @@ class User extends EntityWrapper {
    */
   public function getUsername() {
     return $this->{static::PROPERTY_USERNAME}->value();
+  }
+
+  /**
+   * @param string $username
+   *
+   * @return $this
+   */
+  public function setUsername($username) {
+    $this->{static::PROPERTY_USERNAME}->set($username);
+    return $this;
   }
 
   /**
@@ -48,9 +65,28 @@ class User extends EntityWrapper {
 
   /**
    * @param int $role_id
+   *
+   * @return $this
    */
   public function addRole($role_id) {
     $this->{static::PROPERTY_ROLES}[] = $role_id;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getStatus() {
+    return $this->{static::PROPERTY_STATUS}->value();
+  }
+
+  public function setStatus($status) {
+    $this->{static::PROPERTY_STATUS}->set($status);
+    return $this;
+  }
+
+  public function isActive() {
+    return $this->getStatus() === static::STATUS_ACTIVE;
   }
 
   /**
