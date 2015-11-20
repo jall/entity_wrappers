@@ -77,9 +77,14 @@ class User extends EntityWrapper {
    * @return int
    */
   public function getStatus() {
-    return $this->{static::PROPERTY_STATUS}->value();
+    return (int) $this->{static::PROPERTY_STATUS}->value();
   }
 
+  /**
+   * @param int $status
+   *
+   * @return $this
+   */
   public function setStatus($status) {
     $this->{static::PROPERTY_STATUS}->set($status);
     return $this;
@@ -87,6 +92,10 @@ class User extends EntityWrapper {
 
   public function isActive() {
     return $this->getStatus() === static::STATUS_ACTIVE;
+  }
+
+  public function isBlocked() {
+    return $this->getStatus() === static::STATUS_BLOCKED;
   }
 
   /**
